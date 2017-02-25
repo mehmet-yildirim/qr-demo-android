@@ -45,10 +45,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            webView.reload();
-        } if (id == R.id.qrcode) {
+        if (id == R.id.qrcode) {
             startActivity(new Intent(this, QRScannerActivity.class));
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
