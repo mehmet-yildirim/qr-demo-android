@@ -8,4 +8,8 @@
         android:id="@+id/qrcode"
         android:visible="true"
         android:enabled="true" />
+    <item android:title="Refresh"
+        android:id="@+id/reload"
+        app:showAsAction="always"
+        android:icon="@drawable/reload" />
 </menu>

@@ -73,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.qrcode) {
-
-            showQRAlertDialog();
-
-//            startActivity(new Intent(this, QRScannerActivity.class));
-//            finish();
-            return true;
+        switch (id) {
+            case R.id.qrcode:
+                showQRAlertDialog();
+                break;
+            case R.id.reload:
+                webView.reload();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         adb.setTitle(R.string.qrcode_alertdialog);
         adb.setIcon(R.drawable.qrcode_black);
 
-        CharSequence[] options = new CharSequence[]{getString(R.string.qrcode_alert_receive), getString(R.string.qrcode_alert_send)};
+        CharSequence[] options = new CharSequence[]{getString(R.string.qrcode_alert_send), getString(R.string.qrcode_alert_receive)};
 
         adb.setItems(options, new DialogInterface.OnClickListener() {
             @Override
