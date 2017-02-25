@@ -7,7 +7,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,14 +21,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new WebInterface(this), "Android");
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            webView.loadUrl(String.format("https://qr-generator-demo.herokuapp.com/read/%s", extras.get("qrCode")));
+            if(extras.getBoolean("showQROptions")) {
+                showQRAlertDialog();
+            } else {
+                webView.loadUrl(String.format("https://qr-generator-demo.herokuapp.com/read/%s", extras.get("qrCode")));
+            }
         } else {
-            webView.loadUrl("https://qr-generator-demo.herokuapp.com/generate");
+            webView.loadUrl("https://qr-generator-demo.herokuapp.com/");
         }
+
     }
 
     @Override
@@ -46,26 +59,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.qrcode) {
 
-            AlertDialog.Builder ad = new AlertDialog.Builder(this);
-            ad.setTitle(R.string.qrcode_alertdialog);
-            ad.setIcon(R.drawable.qrcode_black);
-
-            CharSequence[] options = new CharSequence[]{getString(R.string.qrcode_alert_receive), getString(R.string.qrcode_alert_send)};
-
-            ad.setItems(options, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case 0:
-                            startActivity(new Intent(getApplicationContext(), QRScannerActivity.class));
-                            finish();
-                        case 1:
-                            webView.loadUrl("https://qr-generator-demo.herokuapp.com/generate");
-                            break;
-                    }
-                }
-            });
-            ad.show();
+            showQRAlertDialog();
 
 //            startActivity(new Intent(this, QRScannerActivity.class));
 //            finish();
@@ -73,5 +67,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showQRAlertDialog() {
+        AlertDialog.Builder ad = new AlertDialog.Builder(this);
+        ad.setTitle(R.string.qrcode_alertdialog);
+        ad.setIcon(R.drawable.qrcode_black);
+
+        CharSequence[] options = new CharSequence[]{getString(R.string.qrcode_alert_receive), getString(R.string.qrcode_alert_send)};
+
+        ad.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        startActivity(new Intent(getApplicationContext(), QRScannerActivity.class));
+                    case 1:
+                        webView.loadUrl("https://qr-generator-demo.herokuapp.com/generate");
+                        break;
+                }
+            }
+        });
+        ad.show();
     }
 }

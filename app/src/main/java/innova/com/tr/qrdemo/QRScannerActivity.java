@@ -75,6 +75,7 @@ public class QRScannerActivity extends AppCompatActivity implements ZXingScanner
         }
 
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
         i.putExtra("qrCode", result.getText());
         startActivity(i);
