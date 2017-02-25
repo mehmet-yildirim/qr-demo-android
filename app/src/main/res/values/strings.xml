@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">QR Demo</string>
     <string name="action_settings">Settings</string>
+    <string name="qrcode_alertdialog">QR Code İşlemleri</string>
+    <string name="qrcode_alert_receive">Para Al</string>
+    <string name="qrcode_alert_send">Para Gönder</string>
 </resources>

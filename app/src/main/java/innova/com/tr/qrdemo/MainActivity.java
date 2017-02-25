@@ -1,12 +1,10 @@
 package innova.com.tr.qrdemo;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -14,6 +12,7 @@ import android.webkit.WebView;
 public class MainActivity extends AppCompatActivity {
 
     WebView webView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        if(extras != null) {
+        if (extras != null) {
             webView.loadUrl(String.format("https://qr-generator-demo.herokuapp.com/read/%s", extras.get("qrCode")));
         } else {
             webView.loadUrl("https://qr-generator-demo.herokuapp.com/generate");
@@ -46,8 +45,30 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.qrcode) {
-            startActivity(new Intent(this, QRScannerActivity.class));
-            finish();
+
+            AlertDialog.Builder ad = new AlertDialog.Builder(this);
+            ad.setTitle(R.string.qrcode_alertdialog);
+            ad.setIcon(R.drawable.qrcode_black);
+
+            CharSequence[] options = new CharSequence[]{getString(R.string.qrcode_alert_receive), getString(R.string.qrcode_alert_send)};
+
+            ad.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            startActivity(new Intent(getApplicationContext(), QRScannerActivity.class));
+                            finish();
+                        case 1:
+                            webView.loadUrl("https://qr-generator-demo.herokuapp.com/generate");
+                            break;
+                    }
+                }
+            });
+            ad.show();
+
+//            startActivity(new Intent(this, QRScannerActivity.class));
+//            finish();
             return true;
         }
 

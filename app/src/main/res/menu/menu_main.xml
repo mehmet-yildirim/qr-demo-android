@@ -4,7 +4,7 @@
     tools:context="innova.com.tr.qrdemo.MainActivity">
     <item android:title="Scan Code"
         app:showAsAction="always|withText"
-        android:icon="@drawable/qrcode"
+        android:icon="@drawable/qrcode_white"
         android:id="@+id/qrcode"
         android:visible="true"
         android:enabled="true" />
